@@ -1,4 +1,5 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 const backgroundImages = [
   {
@@ -22,6 +23,12 @@ export class RoundSplashScreenComponent implements OnInit {
   @Input() title = '';
   @HostBinding('style.backgroundImage') textColor = '#fff';
   cardHeaderClass = '';
+
+  constructor(private location: Location) {}
+
+  goBack() {
+    this.location.back();
+  }
 
   ngOnInit(): void {
     const randomIndex = Math.random() > 0.5 ? 0 : 1;

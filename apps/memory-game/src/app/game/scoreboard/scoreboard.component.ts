@@ -11,9 +11,16 @@ import { takeWhile } from 'rxjs';
   styleUrls: ['./scoreboard.component.scss'],
 })
 export class ScoreboardComponent implements OnInit, OnDestroy {
-  score: Record<string, number> = {};
+  score: Record<
+    string,
+    {
+      value: number;
+      isWinner: boolean;
+    }
+  > = {};
   game!: IGame;
   isComponentAlive = true;
+  maxScore = 0;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -60,7 +67,19 @@ export class ScoreboardComponent implements OnInit, OnDestroy {
         const score = game.Score.find(
           (score) => score.userId === participant.id
         );
-        this.score[participant.id] = score?.score || 0;
+        const participantScore = score?.score || 0;
+        this.score[participant.id] = {
+          value: participantScore,
+          isWinner: false,
+        };
+        if (participantScore > this.maxScore) {
+          this.maxScore = participantScore;
+        }
+      });
+      game.participants.map((participant) => {
+        if (this.score[participant.id].value === this.maxScore) {
+          this.score[participant.id].isWinner = true;
+        }
       });
     });
   }
