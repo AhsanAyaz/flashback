@@ -31,7 +31,8 @@ export class GameModalComponent {
     alert('Copied to clipboard');
   }
 
-  joinExistingGame(url: string) {
+  joinExistingGame(url: string, $event: any) {
+    $event.preventDefault();
     if (!url) {
       alert('Please enter a valid URL');
       return;
