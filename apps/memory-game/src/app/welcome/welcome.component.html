@@ -35,4 +35,4 @@
   </div>
 </div>
 
-<mg-game-modal (createNewGame)="createNewGame()" (joinGame)="joinGame($event)" (closeModal)="closeModal()" [gameUrl]="gameUrl" [showModal]="showGameModal"></mg-game-modal>
+<mg-game-modal [callInProgress]="callInProgress" (createNewGame)="createNewGame()" (joinGame)="joinGame($event)" (closeModal)="closeModal()" [gameUrl]="gameUrl" [showModal]="showGameModal"></mg-game-modal>

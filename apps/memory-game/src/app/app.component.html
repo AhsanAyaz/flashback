@@ -7,3 +7,21 @@
   <img
   src="https://img.shields.io/github/stars/code-with-ahsan/flashback?style=social" alt="star the repo">
 </a>
+<div
+  (click)="toggleInfo();"
+  class="transition-all info-container fixed h-full z-40 flex items-start pt-14 md:pt-0 md:items-center top-0 bottom-0"
+  [ngClass]="{'-right-[255px]': !infoOpen}"
+  [class.right-0]="infoOpen">
+  <div class="absolute h-max shadow-sm -left-16 top-14 md:top-0 md:bottom-0 m-auto rounded-sm info-button cursor-pointer hover:bg-slate-800 text-center bg-indigo-600 mr-[10px] py-0.5 px-2 text-xs text-white">
+    Info
+  </div>
+  <div class="rounded text-sm shadow-md bg-white border w-[210px] p-2">
+    This game was built during the MongoDB Atlas Hackathon Dec 2021 - Jan 2022.
+    The technologies used are Angular, NestJS, MongoDB, Firebase, and Tailwind CSS with a bit of 💗 by <a href="https://codewithahsan.dev" class="text-indigo-600" target="_blank" rel="noreferrer noopener">Ahsan</a>.
+    Check out the submission <a href="https://dev.to/codewithahsan/flashback-mongoatlas-hackathon-submission-wohooo-a20" class="text-indigo-600" target="_blank" rel="noreferrer noopener">here</a>.
+    <div>
+      Follow ahsan on his <a href="https://bio.link/muhd_ahsanayaz" class="text-indigo-600" target="_blank" rel="noreferrer noopener">socials</a>.
+    </div>
+  </div>
+</div>
+<div *ngIf="infoOpen" (click)="toggleInfo()" class="fixed top-0 left-0 bg-slate-800 bg-opacity-50 z-30 h-full w-full"></div>

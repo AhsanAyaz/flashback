@@ -43,9 +43,9 @@
             <div>
               OR
             </div>
-            <div class="btn btn-sm text-center justify-center" (click)="createNewGame.emit()">
-              Create a new game
-            </div>
+            <button [disabled]="callInProgress" class="btn m-auto btn-sm text-center justify-center" (click)="createNewGame.emit()">
+              {{callInProgress ? '...' : 'Create a new game'}}
+            </button>
           </div>
         </div>
       </div>

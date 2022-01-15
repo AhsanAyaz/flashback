@@ -21,6 +21,7 @@ export class WelcomeComponent implements OnInit {
   componentIsAlive = true;
   gameUrl = '';
   authChecked$ = this.userService.authChecked$;
+  callInProgress = false;
   constructor(
     private auth: AngularFireAuth,
     private gameService: GameService,
@@ -64,13 +65,20 @@ export class WelcomeComponent implements OnInit {
     if (!this.user) {
       return;
     }
-    this.gameService.createNewGame(this.user?.id).subscribe((game) => {
-      this.gameUrl = `${location.origin}/#/game/${game.url}/lobby`;
-      this.db.object(`games/${game.url}`).set({
-        ...game,
-        state: GameState.Waiting,
-      });
-    });
+    this.callInProgress = true;
+    this.gameService.createNewGame(this.user?.id).subscribe(
+      (game) => {
+        this.gameUrl = `${location.origin}/#/game/${game.url}/lobby`;
+        this.db.object(`games/${game.url}`).set({
+          ...game,
+          state: GameState.Waiting,
+        });
+        this.callInProgress = false;
+      },
+      () => {
+        this.callInProgress = false;
+      }
+    );
   }
 
   joinGame(url: string) {

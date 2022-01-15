@@ -9,10 +9,10 @@ import { Clipboard } from '@angular/cdk/clipboard';
 export class GameModalComponent {
   @Input() showModal = false;
   @Input() gameUrl = '';
+  @Input() callInProgress = false;
   @Output() closeModal = new EventEmitter();
   @Output() createNewGame = new EventEmitter();
   @Output() joinGame = new EventEmitter<string>();
-
   constructor(private clipboard: Clipboard) {}
 
   get gameId() {

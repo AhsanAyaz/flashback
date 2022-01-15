@@ -9,6 +9,7 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent {
   returnUrl!: string;
+  infoOpen = false;
   constructor(
     private auth: AngularFireAuth,
     private router: Router,
@@ -36,5 +37,9 @@ export class AppComponent {
         });
       }
     });
+  }
+
+  toggleInfo() {
+    this.infoOpen = !this.infoOpen;
   }
 }

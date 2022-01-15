@@ -1,5 +1,5 @@
 <mg-round-splash-screen>
-  <ng-container *ngIf="game && score">
+  <ng-container *ngIf="game && score; else loading">
     <div class="text-2xl">Scoreboard</div>
     <div class="flex" *ngFor="let participant of game.participants">
       <img
@@ -19,3 +19,10 @@
     </div>
   </ng-container>
 </mg-round-splash-screen>
+
+<ng-template #loading>
+  <div class="text-center">
+    <div class="text-2xl">Loading...</div>
+    <div class="text-sm">Please wait while we load the scoreboard...</div>
+  </div>
+</ng-template>
