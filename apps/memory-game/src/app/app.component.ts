@@ -19,8 +19,9 @@ export class AppComponent {
       this.userService.setAuthChecked(true);
       if (!authUser) {
         let queryParams = {};
-        if (!this.router.url.includes('welcome')) {
+        if (!this.router.url.includes('welcome') && this.router.url !== '/') {
           this.returnUrl = this.router.url;
+          alert(this.router.url);
           queryParams = { returnUrl: this.router.url };
         }
 
