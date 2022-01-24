@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   catchError,
   combineLatestWith,
+  debounceTime,
   distinctUntilChanged,
   filter,
   first,
@@ -28,6 +29,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   isHost = false;
   isParticipating = false;
   isComponentAlive = true;
+  isLobbyStatusEvaluated = false;
   constructor(
     private route: ActivatedRoute,
     private gameService: GameService,
@@ -49,6 +51,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
       return;
     }
     this.getGame(url);
+    this.listenToGameEvents(url);
   }
 
   getGame(url: string) {
@@ -63,7 +66,8 @@ export class LobbyComponent implements OnInit, OnDestroy {
           return throwError(err);
         }),
         combineLatestWith(this.userService.user$),
-        filter(([game, user]) => !!game && !!user)
+        filter(([game, user]) => !!game && !!user),
+        first()
       )
       .subscribe(([game, user]) => {
         this.gameService.setGame(game);
@@ -71,13 +75,16 @@ export class LobbyComponent implements OnInit, OnDestroy {
           return;
         }
         this.setHostAndParticipants(game, user);
+        if (this.isLobbyStatusEvaluated) {
+          return;
+        }
+        this.isLobbyStatusEvaluated = true;
         if (!game.participantsIds.some((id) => id === user?.id)) {
           const confirm = window.confirm('Do you want to join the lobby?');
           if (confirm) {
             this.joinGame(url, user);
           }
         }
-        this.listenToGameEvents(url);
       });
   }
 
@@ -91,12 +98,13 @@ export class LobbyComponent implements OnInit, OnDestroy {
       .object(`games/${url}`)
       .valueChanges()
       .pipe(
+        debounceTime(500),
         filter((game) => !!game),
         takeWhile(() => this.isComponentAlive),
         combineLatestWith(this.userService.user$)
       )
       .subscribe(([game, user]) => {
-        this.gameService.setGame(game as IGame);
+        this.getGame(url);
         if (!user) {
           return;
         }
@@ -105,7 +113,10 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.db
       .object<IGame>(`games/${url}`)
       .valueChanges()
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(
+        debounceTime(500),
+        takeWhile(() => this.isComponentAlive)
+      )
       .pipe(
         distinctUntilChanged((a, b) => {
           return a?.state === b?.state;
@@ -127,7 +138,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.gameService.joinGame(url, user.id).subscribe((game) => {
       this.gameService.setGame(game);
       this.db.object(`games/${url}`).update({
-        participants: game.participants,
         participantsIds: game.participantsIds,
       });
     });
@@ -152,7 +162,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
       .subscribe((game) => {
         this.gameService.setGame(game);
         this.db.object(`games/${url}`).update({
-          participants: game.participants,
           participantsIds: game.participantsIds,
         });
       });

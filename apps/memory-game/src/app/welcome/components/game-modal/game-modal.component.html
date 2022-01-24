@@ -1,4 +1,4 @@
-<div [class.hidden]="!showModal" class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+<div *ngIf="showModal" class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
   <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
     <!--
       Background overlay, show/hide based on modal state.
@@ -34,6 +34,12 @@
       <div class="bg-white px-4 py-5 sm:p-6 sm:pb-4 flex justify-center items-center">
         <div class="flex items-center px-4 md:px-0">
           <div *ngIf="!(gameUrl); else gameUrlView" class="text-center sm:mt-0 sm:ml-4">
+            <form (submit)="updateUserName(userNameInput.value, $event)" class="flex items-center flex-col md:flex-row mb-2">
+              <input id="userNameInput" placeholder="Enter your name" [value]="user?.displayName" #userNameInput class="focus:ring-indigo-500 focus:border-indigo-500 ring-1 ring-pink h-full py-0 pl-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md shadow-sm"/>
+              <button class="btn btn-sm ml-0 mt-2 md:mt-0 md:ml-3" type="submit">
+                Update
+              </button>
+            </form>
             <form (submit)="joinExistingGame(urlInput.value, $event)" class="flex items-center flex-col md:flex-row">
               <input id="gameUrl" placeholder="Enter game ID here" #urlInput class="focus:ring-indigo-500 focus:border-indigo-500 ring-1 ring-pink h-full py-0 pl-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md shadow-sm"/>
               <button class="btn btn-sm ml-0 mt-2 md:mt-0 md:ml-3" type="submit">

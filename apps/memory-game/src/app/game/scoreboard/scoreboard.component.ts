@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IGame } from '../../interfaces/Game.interface';
 import { GameService } from '../../services/game.service';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { takeWhile } from 'rxjs';
+import { debounceTime, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'mg-scoreboard',
@@ -50,7 +50,10 @@ export class ScoreboardComponent implements OnInit, OnDestroy {
         userId: string;
       }>(`games/${this.game.url}/Score`)
       .valueChanges()
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(
+        debounceTime(500),
+        takeWhile(() => this.isComponentAlive)
+      )
       .subscribe(() => {
         this.getGame(this.game.url);
       });

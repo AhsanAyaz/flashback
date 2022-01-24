@@ -42,7 +42,7 @@ export class WelcomeComponent implements OnInit {
   async letsGo() {
     if (!this.user) {
       try {
-        await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        // await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
         this.showGameModal = true;
       } catch (err) {
         console.error(err);
@@ -69,8 +69,9 @@ export class WelcomeComponent implements OnInit {
     this.gameService.createNewGame(this.user?.id).subscribe(
       (game) => {
         this.gameUrl = `${location.origin}/#/game/${game.url}/lobby`;
+        const {url, id, hostId, participantsIds} = game;
         this.db.object(`games/${game.url}`).set({
-          ...game,
+          ...{url, id, hostId, participantsIds},
           state: GameState.Waiting,
         });
         this.callInProgress = false;

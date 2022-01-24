@@ -16,7 +16,21 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: Prisma.UserCreateInput) {
-    return this.usersService.create(createUserDto);
+    const displayName =
+      createUserDto.displayName ||
+      `Player ${Math.floor(Math.random() * 10_000)}`;
+
+    const createParams = {
+      ...createUserDto,
+      displayName,
+      photoURL:
+        createUserDto.photoURL ||
+        `https://avatars.dicebear.com/v2/jdenticon/${displayName.replace(
+          ' ',
+          ''
+        )}.svg`,
+    };
+    return this.usersService.create(createParams);
   }
 
   @Get()

@@ -5,7 +5,9 @@
   "scripts": {
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && npm run prestart:prod",
-    "start": "nx serve",
+    "start": "concurrently \"nx serve memory-game\" \"nx serve api\"",
+    "start:app": "nx serve memory-game",
+    "start:api": "nx serve api",
     "build": "nx build",
     "test": "nx test",
     "prestart:prod": "nx build api",
@@ -62,6 +64,7 @@
     "@typescript-eslint/eslint-plugin": "~5.3.0",
     "@typescript-eslint/parser": "~5.3.0",
     "autoprefixer": "^10.4.0",
+    "concurrently": "^7.0.0",
     "cypress": "^9.1.0",
     "eslint": "8.2.0",
     "eslint-config-prettier": "8.1.0",

@@ -15,7 +15,7 @@ export class AppComponent {
     private router: Router,
     private userService: UserService
   ) {
-    this.auth.authState.subscribe((authUser) => {
+    this.userService.user$.subscribe((authUser) => {
       this.userService.setAuthChecked(true);
       if (!authUser) {
         let queryParams = {};
@@ -28,15 +28,13 @@ export class AppComponent {
         this.router.navigate(['/welcome'], {
           queryParams,
         });
-      } else {
-        if (this.returnUrl) {
-          this.router.navigateByUrl(this.returnUrl);
-          this.returnUrl = '';
-        }
-        this.userService.createUserIfNecessary(authUser).subscribe((user) => {
-          this.userService.setUser(user);
-        });
+      } else if (this.returnUrl) {
+        this.router.navigateByUrl(this.returnUrl);
+        this.returnUrl = '';
       }
+    });
+    this.userService.createUserIfNecessary().subscribe((user) => {
+      this.userService.setUser(user);
     });
   }
 

@@ -1,7 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { combineLatestWith, delay, filter, first, takeWhile } from 'rxjs';
+import {
+  combineLatestWith,
+  debounceTime,
+  filter,
+  first,
+  takeWhile,
+} from 'rxjs';
 import { GameState, IGame } from '../../interfaces/Game.interface';
 import { UserService } from '../../services/user.service';
 import { ScoreService } from '../../services/score.service';
@@ -95,7 +101,10 @@ export class RoundComponent implements OnInit, OnDestroy {
     this.db
       .object<IGame>(`/games/${this.gameUrl}`)
       .valueChanges()
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(
+        debounceTime(1500),
+        takeWhile(() => this.isComponentAlive)
+      )
       .subscribe((game) => {
         {
           if (game?.state === GameState.Finished) {

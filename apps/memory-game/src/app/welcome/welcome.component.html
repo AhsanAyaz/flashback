@@ -5,7 +5,8 @@
       <i class="mr-2 fas fa-copy opacity-50"></i>
       <i class="mr-2 fas fa-minus opacity-50"></i>
       <div class="flex-1 flex justify-end">
-        <div class="text-sm cursor-pointer hover:text-purple mr-2 h-2 min-w-fit" (click)="logout()">{{user ? 'Logout' : ' ' }}</div>
+        <!-- <div class="text-sm cursor-pointer hover:text-purple mr-2 h-2 min-w-fit" (click)="logout()">{{user ? 'Logout' : ' ' }}</div> -->
+        <div class="text-sm mr-2 h-2 min-w-fit">{{user ? user.displayName : ' ' }}</div>
       </div>
     </div>
     <div class="z-10 relative flex-1 bg-white p-4 border-black border-x-2">
