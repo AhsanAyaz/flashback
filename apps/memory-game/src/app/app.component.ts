@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { UserService } from './services/user.service';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 @Component({
   selector: 'mg-root',
   templateUrl: './app.component.html',
@@ -11,7 +11,7 @@ export class AppComponent {
   returnUrl!: string;
   infoOpen = false;
   constructor(
-    private auth: AngularFireAuth,
+    private analytics: AngularFireAnalytics,
     private router: Router,
     private userService: UserService
   ) {
@@ -39,6 +39,9 @@ export class AppComponent {
   }
 
   toggleInfo() {
+    this.analytics.logEvent('info_toggled', {
+      toggle: !this.infoOpen,
+    });
     this.infoOpen = !this.infoOpen;
   }
 }

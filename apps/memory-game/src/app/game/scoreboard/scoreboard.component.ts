@@ -4,6 +4,8 @@ import { IGame } from '../../interfaces/Game.interface';
 import { GameService } from '../../services/game.service';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { debounceTime, takeWhile } from 'rxjs';
+import { AnalyticsService } from '../../services/analytics.service';
+import { AnalyticsEvents } from '../../constants/analytics';
 
 @Component({
   selector: 'mg-scoreboard',
@@ -25,7 +27,8 @@ export class ScoreboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private gameService: GameService,
-    private db: AngularFireDatabase
+    private db: AngularFireDatabase,
+    private analytics: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +38,9 @@ export class ScoreboardComponent implements OnInit, OnDestroy {
       this.router.navigate(['/welcome']);
       return;
     }
+    this.analytics.logEvent(AnalyticsEvents.ENTERED_SCOREBOARD, {
+      gameUrl: url,
+    });
     this.getGame(url, () => this.listenToScoreChanges());
   }
 

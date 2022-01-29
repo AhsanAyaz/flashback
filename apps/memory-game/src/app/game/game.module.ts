@@ -6,7 +6,7 @@ import { RoundComponent } from './round/round.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { RoundSplashScreenComponent } from './components/round-splash-screen/round-splash-screen.component';
 import { LobbyComponent } from './lobby/lobby.component';
-
+import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 const routes = [
   {
     path: '',
@@ -36,6 +36,10 @@ const routes = [
     RoundSplashScreenComponent,
     LobbyComponent,
   ],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    AngularFireAnalyticsModule,
+  ],
 })
 export class GameModule {}

@@ -8,6 +8,8 @@ import { User } from '@prisma/client';
 import { Router } from '@angular/router';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { GameState } from '../interfaces/Game.interface';
+import { AnalyticsEvents } from '../constants/analytics';
+import { AnalyticsService } from '../services/analytics.service';
 
 @Component({
   selector: 'mg-welcome',
@@ -24,6 +26,7 @@ export class WelcomeComponent implements OnInit {
   callInProgress = false;
   constructor(
     private auth: AngularFireAuth,
+    private analytics: AnalyticsService,
     private gameService: GameService,
     private userService: UserService,
     private router: Router,
@@ -44,6 +47,7 @@ export class WelcomeComponent implements OnInit {
       try {
         // await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
         this.showGameModal = true;
+        this.analytics.logEvent(AnalyticsEvents.OPENED_GAME_MODAL);
       } catch (err) {
         console.error(err);
       }
@@ -59,6 +63,7 @@ export class WelcomeComponent implements OnInit {
 
   closeModal() {
     this.showGameModal = false;
+    this.analytics.logEvent(AnalyticsEvents.CLOSED_GAME_MODAL);
   }
 
   createNewGame() {
@@ -69,10 +74,14 @@ export class WelcomeComponent implements OnInit {
     this.gameService.createNewGame(this.user?.id).subscribe(
       (game) => {
         this.gameUrl = `${location.origin}/#/game/${game.url}/lobby`;
-        const {url, id, hostId, participantsIds} = game;
+        const { url, id, hostId, participantsIds } = game;
         this.db.object(`games/${game.url}`).set({
-          ...{url, id, hostId, participantsIds},
+          ...{ url, id, hostId, participantsIds },
           state: GameState.Waiting,
+        });
+        this.analytics.logEvent(AnalyticsEvents.GAME_CREATED, {
+          gameUrl: this.gameUrl,
+          hostId,
         });
         this.callInProgress = false;
       },

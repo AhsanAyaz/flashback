@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { GameModalComponent } from './components/game-modal/game-modal.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 
 const routes = [
   {
@@ -20,6 +21,7 @@ const routes = [
     RouterModule.forChild(routes),
     AngularFireAuthModule,
     ClipboardModule,
+    AngularFireAnalyticsModule,
   ],
 })
 export class WelcomeModule {}

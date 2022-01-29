@@ -1,0 +1,16 @@
+export enum AnalyticsEvents {
+  GAME_CREATED = 'game_created',
+  INFO_TOGGLED = 'info_toggled',
+  OPENED_GAME_MODAL = 'opened_game_modal',
+  CLOSED_GAME_MODAL = 'closed_game_modal',
+  GAME_STARTED = 'game_started',
+  GAME_ENDED = 'game_ended',
+  USER_NAME_UPDATED = 'user_name_updated',
+  GAME_ID_COPIED = 'game_id_copied',
+  NAVIGATING_TO_GAME = 'navigating_to_game',
+  ENTERED_GAME_LOBBY = 'entered_game_lobby',
+  ENTERED_GAME_ROUND = 'entered_game_round',
+  ENTERED_SCOREBOARD = 'entered_scoreboard',
+  GAME_JOINED = 'game_joined',
+  GAME_LEFT = 'game_left',
+}

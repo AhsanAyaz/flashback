@@ -17,6 +17,8 @@ import { UserService } from '../../services/user.service';
 import { GameState, IGame } from '../../interfaces/Game.interface';
 import { User } from '@prisma/client';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { AnalyticsService } from '../../services/analytics.service';
+import { AnalyticsEvents } from '../../constants/analytics';
 
 @Component({
   selector: 'mg-lobby',
@@ -35,7 +37,8 @@ export class LobbyComponent implements OnInit, OnDestroy {
     private gameService: GameService,
     private userService: UserService,
     private router: Router,
-    private db: AngularFireDatabase
+    private db: AngularFireDatabase,
+    private analytics: AnalyticsService
   ) {
     this.game$ = this.gameService.game$ as Observable<IGame>;
   }
@@ -50,6 +53,9 @@ export class LobbyComponent implements OnInit, OnDestroy {
     if (!url) {
       return;
     }
+    this.analytics.logEvent(AnalyticsEvents.ENTERED_GAME_LOBBY, {
+      url,
+    });
     this.getGame(url);
     this.listenToGameEvents(url);
   }
@@ -136,6 +142,9 @@ export class LobbyComponent implements OnInit, OnDestroy {
 
   joinGame(url: string, user: User) {
     this.gameService.joinGame(url, user.id).subscribe((game) => {
+      this.analytics.logEvent(AnalyticsEvents.GAME_JOINED, {
+        url,
+      });
       this.gameService.setGame(game);
       this.db.object(`games/${url}`).update({
         participantsIds: game.participantsIds,
@@ -160,6 +169,9 @@ export class LobbyComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((game) => {
+        this.analytics.logEvent(AnalyticsEvents.GAME_LEFT, {
+          url,
+        });
         this.gameService.setGame(game);
         this.db.object(`games/${url}`).update({
           participantsIds: game.participantsIds,

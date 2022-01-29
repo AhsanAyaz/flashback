@@ -13,6 +13,8 @@ import { UserService } from '../../services/user.service';
 import { ScoreService } from '../../services/score.service';
 import { ICard } from '../../interfaces/Card.interface';
 import { GameService } from '../../services/game.service';
+import { AnalyticsService } from '../../services/analytics.service';
+import { AnalyticsEvents } from '../../constants/analytics';
 
 @Component({
   selector: 'mg-round',
@@ -36,7 +38,8 @@ export class RoundComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private db: AngularFireDatabase,
     private scoreService: ScoreService,
-    private gameService: GameService
+    private gameService: GameService,
+    private analytics: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +48,9 @@ export class RoundComponent implements OnInit, OnDestroy {
     this.showSplashIfApplicable();
     this.listenToEvents();
     this.cards = this.gameService.generateRandomEmojis(14);
+    this.analytics.logEvent(AnalyticsEvents.ENTERED_GAME_ROUND, {
+      gameUrl: this.gameUrl || '',
+    });
   }
 
   ngOnDestroy(): void {
@@ -156,6 +162,10 @@ export class RoundComponent implements OnInit, OnDestroy {
         userId: this.userId,
       })
       .subscribe(() => {
+        this.analytics.logEvent(AnalyticsEvents.GAME_ENDED, {
+          gameUrl: this.gameUrl || '',
+          score: this.score,
+        });
         this.db
           .object(`/games/${this.gameUrl}`)
           .update({
