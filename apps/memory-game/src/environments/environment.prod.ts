@@ -10,6 +10,6 @@ export const environment = {
     messagingSenderId: '1014147231990',
     measurementId: 'G-8JNV7B55M8',
   },
-  apiUrl: 'https://prod.appflashback.com/api',
+  apiUrl: 'https://flashback-production.up.railway.app/api',
   production: true,
 };
