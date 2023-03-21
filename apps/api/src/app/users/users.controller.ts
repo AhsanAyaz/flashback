@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Prisma } from '@prisma/client';
@@ -15,7 +17,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: Prisma.UserCreateInput) {
+  async create(@Body() createUserDto: Prisma.UserCreateInput) {
     const displayName =
       createUserDto.displayName ||
       `Player ${Math.floor(Math.random() * 10_000)}`;
@@ -30,7 +32,13 @@ export class UsersController {
           ''
         )}.svg`,
     };
-    return this.usersService.create(createParams);
+    try {
+      const created = await this.usersService.create(createParams);
+      return created
+    } catch (e) {
+      console.log({e})
+      throw new HttpException('User not found', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get()

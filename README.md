@@ -1,5 +1,3 @@
-
-
 # Flashback
 
 <a href="https://flashback-3b0aa.web.app/">
@@ -7,6 +5,7 @@
 </a>
 
 ## Game Url (Demo)
+
 <a href="https://flashback-3b0aa.web.app/">
 https://flashback-3b0aa.web.app/
 </a>
@@ -14,18 +13,20 @@ https://flashback-3b0aa.web.app/
 <br>
 
 ## About the game
+
 This is a memory based game built for the MongoDB Atlas Hackathon. Players can create game lobbies and invite others using a link. They can simulataneously play the memory game and whoever finishes first, essentially wins and the game quickly ends as someone finishes the game as a winner.
 
 ## IMPORTANT NOTE:
+
 When testing the app, please wait a while as the heroku instance (dyno) might still be down, since it is on a free teer. Once you log in, you can wait for a few seconds and try again to see everything working.
 
-
 ## Built with
+
 The game is built using Angular, TypeScript, TailwindCSS, NestJS, MongoDB 😄 (of course), and Firebase. Also, with a lot of and hardwork 💗. Which can be seen at either [Twitch](https://twitch.tv/codewithahsan) or [YouTube](https://youtube.com/CodeWithAhsan) as all of this was streamed LIVE with all my efforts, frustration, and small wins 😉.
 
 ## Where is everything hosted?
-The frontend of the app is deployed to Firebase Hosting while the backend (NestJS) is deployed to Heroku.
 
+The frontend of the app is deployed to Firebase Hosting while the backend (NestJS) is deployed to Heroku.
 
 ## About me
 
@@ -54,4 +55,3 @@ Or follow & connect with me on my Socials:
 [![Facebook Profile](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/codewithahsan)
 [![TikTok Profile](https://img.shields.io/badge/TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white)](https://www.tiktok.com/@codewithahsan)
 [![CodeWithAhsan Discord](https://img.shields.io/discord/814191682282717194.svg?label=CodeWithAhsan&logo=Discord&colorB=7289da&style=for-the-badge)](https://discord.gg/rEBSSh926k)
-

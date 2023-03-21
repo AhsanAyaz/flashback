@@ -7,9 +7,10 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
   async create(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data,
     });
+    return user;
   }
 
   async findAll(): Promise<User[] | null> {
